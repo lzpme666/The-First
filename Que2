@@ -1,0 +1,58 @@
+#include<iostream>
+#include<fstream>
+#define LENGTH_MAX 7
+
+using namespace std;
+
+int get_c(int m, int n)
+{
+	if (n == m || 0 == m || 0 == n)return 1;
+	if (1 == n)return m;
+	return (get_c(m - 1, n - 1) + get_c(m, n - 1));
+}
+
+int get_sum(char* str,int depth)
+{
+	int sum = 0;
+	if (1 == depth)
+		return (str[0] - 'a' + 1);
+	else if(depth > 1)
+	{
+		for (int i = 0; i < depth; i++)
+		{
+			int lastCh = 0;
+			if (i != 0)
+			{
+				sum += get_c(i, 26);
+				lastCh = str[i - 1] - 'a' + 1;
+			}
+			sum += get_c(depth - i, 26 - lastCh) - get_c(depth - i, 26 - (str[i] - 'a'));
+		}
+	}
+	return sum + 1;
+}
+
+int main()
+{
+	ifstream fp_read("input.txt");
+	ofstream fp_write("output.txt");
+	if (fp_read.fail() || fp_write.fail())
+	{
+		cout << "打开文件错误!" << endl;
+		exit(0);
+	}
+	int num = 0;
+	fp_read >> num;
+	cout << num << endl;
+	for (int i = 0; i < num; i++)
+	{
+		char input[LENGTH_MAX];
+		fp_read >> input;
+		cout << input << " : ";
+		int depth = strlen(input);
+		int sum = get_sum(input, depth);
+		fp_write << sum << endl;
+		cout << sum << endl;
+	}
+	return 0;
+}
