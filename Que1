@@ -1,13 +1,21 @@
 #include <iostream>
 #include <math.h>
+#include<fstream>
 using namespace std;
 int main()
 {
+	ifstream fp_read("input.txt");
+	ofstream fp_write("output.txt");
+	if (fp_read.fail() || fp_write.fail())
+	{
+		cout << "打开文件错误!" << endl;
+		exit(0);
+	}
 	int a[10]={0};
 	int c=0;
 	int n;
 	int b,d=0;
-	cin >> n;
+	fp_read >> n;
 	for(int i=0;i<10;i++){
 		b=(int)pow(10,i);
 		d=(int)pow(10,i+1);
@@ -27,6 +35,7 @@ int main()
 		else break;
 	}
 	for(int i=0;i<10;i++){
+		fp_write << a[i] << endl;
 		cout << a[i] << endl;
 	}
 	return 0;
